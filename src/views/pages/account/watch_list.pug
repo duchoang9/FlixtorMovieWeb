@@ -2,32 +2,7 @@ html
   head
     title Watchlist
   body
-    h1 Watchlist
-    form(action='/watchlist/add' method='POST')
-      label(for='userId') User ID:
-      input(type='text' name='userId' id='userId')
-      label(for='movieId') Movie ID:
-      input(type='text' name='movieId' id='movieId')
-      button(type='submit') Add to Watchlist
-    hr
-    h2 Your Watchlist
-    form(action='/watchlist/remove' method='POST')
-      each movie in watchlist
-        div
-          input(type='checkbox' name='movieIds' value=`${movie.id}`)
-          span= movie.title
-      button(type='submit') Remove Selected Movies
-    hr
-    form(action='/watchlist/sort' method='POST')
-      select(name='sortOption')
-        option(value='default' selected) Sort by Default
-        option(value='title') Sort by Title
-        option(value='releaseDate') Sort by Release Date
-      button(type='submit') Sort
-    hr
-    form(action='/watchlist/filter' method='POST')
-      select(name='filterOption')
-        option(value='default' selected) Filter by Default
-        each genre in genres
-          option(value=`${genre.id}`)= genre.name
-      button(type='submit') Filter
+    h1 My Watchlist
+    ul
+      each movie in movies
+        li= movie.title
