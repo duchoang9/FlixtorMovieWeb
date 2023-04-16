@@ -1,40 +1,88 @@
 const db = require('../models');
-const WatchList = db.watch_list;
+const { Op } = require('sequelize');
+
+exports.getWatchList = async (req, res) => {
+  try {
+    // Lấy thông tin user từ database
+    const user = await db.User.findOne({ where: { id: req.user.id } });
+
+    // Lấy danh sách phim trong watchlist của user đó từ database
+    const watchList = await db.WatchList.findAll({
+      where: { user_id: req.user.id },
+      include: 'movie',
+      order: [['createdAt', 'DESC']],
+    });
+
+    // Kiểm tra nếu không tìm thấy user hoặc không có phim nào trong watchlist thì trả về lỗi
+    if (!user || !watchList) {
+      return res.status(404).json({ message: 'User or watchlist not found' });
+    }
+
+    // Render view và truyền các thông tin cần hiển thị
+    res.render('watch_list', {
+      user: {
+        username: user.user_name,
+        email: user.email,
+        numMovies: watchList.length
+      },
+      watchList
+    });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ message: 'Internal server error' });
+  }
+};
 
 exports.addToWatchList = async (req, res) => {
   try {
-    const { userId, movieId } = req.body;
+    const movieId = req.body.movieId;
 
-    // Kiểm tra phim có tồn tại trong watchlist không
-    const existingMovie = await WatchList.findOne({ where: { user_id: userId, movie_id: movieId } });
-    if (existingMovie) {
-      return res.status(409).json({ message: 'Movie already exists in watchlist' });
+    // Kiểm tra movie có tồn tại trong watch_list hay không
+    const watchListItem = await db.WatchList.findOne({
+      where: {
+        user_id: req.session.userId,
+        movie_id: movieId
+      }
+    });
+
+    if (watchListItem) {
+      res.status(400).send('Movie already in watch list');
+    } else {
+      await db.WatchList.create({
+        user_id: req.session.userId,
+        movie_id: movieId
+      });
+      res.send('Movie added to watch list');
     }
-
-    // Thêm phim vào watchlist
-    const newMovie = await WatchList.create({ user_id: userId, movie_id: movieId });
-    return res.status(201).json({ message: 'Movie added to watchlist', movie: newMovie });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Failed to add movie to watchlist' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal server error');
   }
 };
 
 exports.removeFromWatchList = async (req, res) => {
   try {
-    const { userId, movieId } = req.body;
+    const watchListItemId = req.body.watchListItemId;
 
-    // Tìm phim
-    const movie = await WatchList.findOne({ where: { user_id: userId, movie_id: movieId } });
-    if (!movie) {
-      return res.status(404).json({ message: 'Movie not found in watchlist' });
-    }
+    await db.WatchList.destroy({
+      where: {
+        id: watchListItemId,
+        user_id: req.session.userId
+      }
+    });
 
-    // Xóa phim ra khỏi watchlist
-    await movie.destroy();
-    return res.status(200).json({ message: 'Movie removed from watchlist' });
-  } catch (error) {
-    console.error(error);
-    return res.status(500).json({ message: 'Failed to remove movie from watchlist' });
+    res.send('Movie removed from watch list');
+  } catch (err) {
+    console.error(err);
+    res.status(500).send('Internal server error');
   }
+};
+// Middleware user
+exports.requireUser = async (req, res, next) => {
+  // Kiểm tra nếu user chưa đăng nhập thì redirect về trang đăng nhập
+  if (!req.user) {
+    return res.redirect('/login');
+  }
+  
+  next();
 };
