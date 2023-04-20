@@ -13,5 +13,6 @@ module.exports = (sequelize, DataTypes) => {
           },
     }, {
         tableName: 'watch_list',
+        timestamps: false
     });
 };

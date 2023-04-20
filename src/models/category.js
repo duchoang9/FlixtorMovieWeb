@@ -17,5 +17,6 @@ module.exports = (sequelize, DataTypes) => {
           }
     }, {
         tableName: 'category',
+        timestamps: false
     });
 };

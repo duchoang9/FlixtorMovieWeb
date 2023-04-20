@@ -17,11 +17,11 @@ module.exports = (sequelize, DataTypes) => {
           },
         password: {
             allowNull: false,
-            type: DataTypes.STRING(30),
+            type: DataTypes.STRING,
           },
         role: {
             allowNull: false,
-            type: DataTypes.INTEGER(1),
+            type: DataTypes.STRING(10),
           },
         ban: {
             allowNull: false,
@@ -39,5 +39,8 @@ module.exports = (sequelize, DataTypes) => {
           },
     }, {
         tableName: 'user',
+        timestamps: true,
+        createdAt: 'create_at',
+        updatedAt: 'update_at'
     });
 };

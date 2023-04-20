@@ -54,5 +54,8 @@ module.exports = (sequelize, DataTypes) => {
           },
     }, {
         tableName: 'movie',
+        timestamps: true,
+        createdAt: 'create_at',
+        updatedAt: 'update_at'
     });
 };

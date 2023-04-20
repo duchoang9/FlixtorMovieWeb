@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js",
+    "start": "nodemon --inspect index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -18,10 +18,13 @@
   },
   "homepage": "https://github.com/duchoang9/FlixtorMovieWeb#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.2",
+    "cookie-session": "^2.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "express-validator": "^6.15.0",
+    "jsonwebtoken": "^9.0.0",
     "mysql2": "^3.2.0",
     "pug": "^3.0.2",
     "sequelize": "^6.30.0"
