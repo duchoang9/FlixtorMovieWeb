@@ -39,7 +39,6 @@ app.use('/videos', express.static(path.join(__dirname, 'public/videos')));
 // router
 routes(app);
 
-
 // 
 app.get('/', function(req, res){
     res.send("Hello World");
