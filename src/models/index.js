@@ -41,12 +41,24 @@ const watch_list = watchListModel(sequelize, DataTypes);
 // định nghĩa quan hệ
 actor.belongsToMany(movie, { through: cast, foreignKey: 'actor_id' });
 movie.belongsToMany(actor, { through: cast, foreignKey: 'movie_id' });
+actor.hasMany(cast, { foreignKey: 'actor_id'});
+cast.belongsTo(actor, { foreignKey: 'actor_id'});
+movie.hasMany(cast, { foreignKey: 'movie_id'});
+cast.belongsTo(movie, { foreignKey: 'movie_id'});
 
 gerne.belongsToMany(movie, { through: category, foreignKey: 'gerne_id' });
 movie.belongsToMany(gerne, { through: category, foreignKey: 'movie_id' });
+gerne.hasMany(category, { foreignKey: 'gerne_id'});
+category.belongsTo(gerne, { foreignKey: 'gerne_id'});
+movie.hasMany(category, { foreignKey: 'movie_id'});
+category.belongsTo(movie, { foreignKey: 'movie_id'});
 
 watch_list.belongsToMany(movie, { through: movie_list, foreignKey: 'watch_list_id' });
 movie.belongsToMany(watch_list, { through: movie_list, foreignKey: 'movie_id' });
+watch_list.hasMany(movie_list, { foreignKey: 'watch_list_id' });
+movie_list.belongsTo(watch_list, { foreignKey: 'watch_list_id' });
+movie.hasMany(movie_list, { foreignKey: 'movie_id' });
+movie_list.belongsTo(movie, { foreignKey: 'movie_id' });
 
 movie.belongsTo(director, { foreignKey: 'director_id' });
 director.hasMany(movie, { foreignKey: 'director_id' });

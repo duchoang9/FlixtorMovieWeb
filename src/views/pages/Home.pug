@@ -54,7 +54,7 @@ html(lang="en")
 
     section
       if latestMovies && latestMovies.length > 0
-        h2.latest-movies Latest Movies
+        h2.latest-movies Latest Update Movies
         ul.movie-list
           each movie in latestMovies
               li.movie-item
@@ -65,20 +65,19 @@ html(lang="en")
                     span.fa.fa-star
                     span.rating-value= movie.rating
                 button.add-to-watchlist(type="button") Add to Watchlist
-
-    if watch_list
-      section
-        h2 Watchlist
+    section
+      if movieInWatchList && movieInWatchList.length > 0
+        h2 Your Watch List
         ul.movie-list
-          each movieList in watch_list.movie_lists
-            each movie in movieList.movies
-              li.movie-item
-                a(href=`/movie/${movie.id}`)
-                    img(src=`/images/movies/${movie.image}`, alt=`${movie.title}`)
-                    h3.movie-title= movie.title
-                    p.rating
-                      span.fa.fa-star
-                      span.rating-value= movie.rating
-
+          each movie in movieInWatchList
+            li.movie-item
+              a(href=`/movie/${movie.id}`)
+                img(src=`/images/movies/${movie.image}`, alt=`${movie.title}`)
+                h3.movie-title= movie.title
+                p.rating
+                  span.fa.fa-star
+                  span.rating-value= movie.rating
+          
+  
     script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js")
     script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js')
