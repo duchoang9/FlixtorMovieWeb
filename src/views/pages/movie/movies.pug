@@ -53,9 +53,34 @@ html(lang="en")
             label.m-0(for='year') Year:
             select.form-select(name='year')
               option(value='') Select Year
-              - for(let i = 2023; i >= 1960; i--) {
-                option(value=`${i}`) #{i}
+              - for(let i = 2023; i >= 2020; i--) {
+                option(value=i) #{i}
               - }
+              option(value='2020s') 2020s
+              - for(let i = 2019; i >= 2010; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='2010s') 2010s
+              - for(let i = 2009; i >= 2000; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='2000s') 2000s
+              - for(let i = 1999; i >= 1990; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1990s') 1990s
+              - for(let i = 1989; i >= 1980; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1980s') 1980s
+              - for(let i = 1979; i >= 1970; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1970s') 1970s
+              - for(let i = 1969; i >= 1960; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1960s') 1960s
           b.col-xxl-3.p-3.text-secondary
             label.m-0(for='gerne') Gerne:
             select.form-select(name='gerne')

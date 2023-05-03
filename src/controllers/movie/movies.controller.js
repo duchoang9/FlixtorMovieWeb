@@ -19,6 +19,17 @@ module.exports.getAllMovies = async (req, res) => {
   }
 };
 
+function getReleaseDateBetween(year) {
+  if (!year) {
+    return [ '0001-01-01', '9999-12-31' ];
+  }
+  if (year.endsWith('s')) {
+    const startYear = parseInt(year.slice(0, 4));
+    const endYear = startYear + 9;
+    return [`${startYear}-01-01`, `${endYear}-12-31`];
+  }
+  return [`${year}-01-01`, `${year}-12-31`];
+}
 
 module.exports.filterMovies = async (req, res) => {
   const { year, gerne, country } = req.query;
@@ -46,7 +57,7 @@ module.exports.filterMovies = async (req, res) => {
     const movies = await Movie.findAll({
       where: {
         release: {
-          [Op.between]: [year ? `${year}-01-01` : '0001-01-01', year ? `${year}-12-31` : '9999-12-31']
+          [Op.between]: getReleaseDateBetween(year)
         }
       },
       include: [
