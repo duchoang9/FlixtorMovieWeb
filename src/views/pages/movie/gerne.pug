@@ -1,0 +1,134 @@
+doctype html
+html(lang="en")
+  head
+    title= title
+    meta(charset="UTF-8")
+    meta(name="viewport", content="width=device-width, initial-scale=1.0")
+    link(href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous")
+    link(rel="stylesheet" type="text/css" href="/css/home.css")
+    script(src="https://kit.fontawesome.com/1de5e0d4fc.js" crossorigin="anonymous")
+
+  body
+    include ../../partials/header.pug
+
+    main
+      //- search field
+      form(action="/movie/search" method="get")
+        div.form-group.text-bg-dark(style="padding:1em 20vw")
+          .input-group
+            span.input-group-text.p-3
+              i.fa-solid.fa-magnifying-glass.fa-lg
+            input.form-control.p-3(type="text", name="keyword", placeholder="Enter movie title")
+            button.btn.btn-info.text-light(type="submit")
+              i.fa-solid.fa-arrow-right.fa-xl.p-2
+      if results && results.length > 0
+        .container.mt-3
+          h2.mb-3(style="color: var(--bs-success-text-emphasis)" data-bs-theme="dark")
+            u Search results
+          .row.row-cols-auto
+            each movie in results
+              .col-xxl-2.mb-5
+                .movie-iteme
+                  a.text-decoration-none.text-dark(href=`/movie/${movie.id}`)
+                    img(src=`/images/${movie.image}` alt=`${movie.title}` width="200" height="290")
+                    .bg-body-tertiary(style="width:200px")
+                      h5.text-nowrap= movie.title
+                      .d-flex.flex-row.justify-content-between
+                        .d-flex.flex-row
+                          p.my-0.mx-1= movie.release.substr(0, 4)
+                          p.my-0.mx-1 |
+                          p.my-0.mx-1.rating
+                            span.rating-value= movie.rating
+                            span.fa.fa-star.text-warning
+                        .rounded.text-light.p-1.mx-2.mb-1.bg-success(style="font-size: 0.7rem") Movie
+      else
+        p 
+      .container.mt-3
+        h2.mb-3.text-success-emphasis(data-bs-theme="dark")
+          u= `${genre.charAt(0).toUpperCase() + genre.slice(1)} Movies`
+
+        //- filter section  
+        form.row.row-cols-auto.mx-0.mb-2.bg-primary-subtle.rounded(action="/movie/filter" method="GET")
+          b.col-xxl-2.p-3.text-secondary
+            label.m-0(for='year') Year:
+            select.form-select(name='year')
+              option(value='') Select Year
+              - for(let i = 2023; i >= 2020; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='2020s') 2020s
+              - for(let i = 2019; i >= 2010; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='2010s') 2010s
+              - for(let i = 2009; i >= 2000; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='2000s') 2000s
+              - for(let i = 1999; i >= 1990; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1990s') 1990s
+              - for(let i = 1989; i >= 1980; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1980s') 1980s
+              - for(let i = 1979; i >= 1970; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1970s') 1970s
+              - for(let i = 1969; i >= 1960; i--) {
+                option(value=i) #{i}
+              - }
+              option(value='1960s') 1960s
+          b.col-xxl-2.p-3.text-secondary
+            label.m-0(for='gerne') Genre:
+            select.form-select(name='gerne')
+              - const genres = ["Action", "Crime", "Thriller", "Drama", "Comedy", "Biography", "Family", "History", "Music", "Romance", "Western", "Adventure", "Costome", "Horror", "Sci-Fi", "War", "Sport", "Animation", "Fantasy", "Documentary", "Mystery", "Kungfu"]
+              option(value='') Select Genre
+              each genre in genres
+                option(value= `${genre}`)= genre
+          b.col-xxl-2.p-3.text-secondary
+            label.m-0(for='country') Country:
+            select.form-select(name='country')
+              option(value='') Select Country
+              option(value='United States') United States
+              option(value='France') France
+              option(value='Italy') Italy
+          b.col-xxl-2.p-3.text-secondary
+            label.m-0(for='sort') Sort By:
+            select.form-select(name='sort')
+              option(value='') Default
+              option(value='create_at') Recently Added
+              option(value='release') Release Date
+              option(value='title') Name
+              option(value='rating') IMDb
+          b.col-xxl-2.p-2.d-flex.align-items-end
+            button.btn.btn-warning.m-2.text-light.text-nowrap(type='submit')
+              i.fa-solid.fa-filter.me-2
+              |Filter
+
+        //- movies section
+        if movies && movies.length > 0
+          .container.p-0
+            .row.row-cols-auto
+              each movie in movies
+                .col-xxl-2.mb-5
+                  .movie-iteme
+                    a.text-decoration-none.text-dark(href=`/movie/${movie.id}`)
+                      img(src=`/images/${movie.image}` alt=`${movie.title}` width="200" height="290")
+                      .bg-body-tertiary(style="width:200px")
+                        h5.text-nowrap= movie.title
+                        .d-flex.flex-row.justify-content-between
+                          .d-flex.flex-row
+                            p.my-0.mx-1= movie.release.substr(0, 4)
+                            p.my-0.mx-1 |
+                            p.my-0.mx-1.rating
+                              span.rating-value= movie.rating
+                              span.fa.fa-star.text-warning
+                          .rounded.text-light.p-1.mx-2.mb-1.bg-success(style="font-size: 0.7rem") Movie
+
+    include ../../partials/footer.pug
+
+    script(src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js")

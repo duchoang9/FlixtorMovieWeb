@@ -48,8 +48,8 @@ html(lang="en")
           u Movies
 
         //- filter section  
-        form.row.row-cols-auto.mx-0.mb-3.bg-primary-subtle.rounded(action="/movie/filter" method="GET")
-          b.col-xxl-3.p-3.text-secondary
+        form.row.row-cols-auto.mx-0.mb-2.bg-primary-subtle.rounded(action="/movie/filter" method="GET")
+          b.col-xxl-2.p-3.text-secondary
             label.m-0(for='year') Year:
             select.form-select(name='year')
               option(value='') Select Year
@@ -81,21 +81,21 @@ html(lang="en")
                 option(value=i) #{i}
               - }
               option(value='1960s') 1960s
-          b.col-xxl-3.p-3.text-secondary
-            label.m-0(for='gerne') Gerne:
+          b.col-xxl-2.p-3.text-secondary
+            label.m-0(for='gerne') Genre:
             select.form-select(name='gerne')
               - const genres = ["Action", "Crime", "Thriller", "Drama", "Comedy", "Biography", "Family", "History", "Music", "Romance", "Western", "Adventure", "Costome", "Horror", "Sci-Fi", "War", "Sport", "Animation", "Fantasy", "Documentary", "Mystery", "Kungfu"]
               option(value='') Select Genre
               each genre in genres
                 option(value= `${genre}`)= genre
-          b.col-xxl-3.p-3.text-secondary
+          b.col-xxl-2.p-3.text-secondary
             label.m-0(for='country') Country:
             select.form-select(name='country')
               option(value='') Select Country
               option(value='United States') United States
               option(value='France') France
               option(value='Italy') Italy
-          b.col-xxl-3.p-3.text-secondary
+          b.col-xxl-2.p-3.text-secondary
             label.m-0(for='sort') Sort By:
             select.form-select(name='sort')
               option(value='') Default
@@ -103,7 +103,7 @@ html(lang="en")
               option(value='release') Release Date
               option(value='title') Name
               option(value='rating') IMDb
-          .col-xxl-3.p-2.d-flex.align-items-end
+          b.col-xxl-2.p-2.d-flex.align-items-end
             button.btn.btn-warning.m-2.text-light.text-nowrap(type='submit')
               i.fa-solid.fa-filter.me-2
               |Filter
