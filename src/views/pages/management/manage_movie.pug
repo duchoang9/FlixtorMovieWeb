@@ -169,36 +169,37 @@ html(lang="en")
                                     input#titleUpdateMovie.form-control(type='text', name='updateTitle')
                                     label(for='titleUpdateMovie') Title 
                                 .form-floating.mb-3
-                                    textarea#descriptionUpdateMovie.form-control(rows="5", name='updateDescription')
-                                    label(for='descriptionUpdateMovie') Description 
+                                    textarea#descriptionUpdateMovie.form-control(rows="5", name='updateDescription' style="height:fit-content")
+                                    label(for='descriptionUpdateMovie') Description
                                 .row.group-input.mb-3 
                                     .col.form-floating
-                                        input#ratingUpdateMovie.form-control(type='number', step="0.1", min="0.0", max="10.0", name='updateRating')
-                                        label(for='ratingUpdateMovie') Rating 
+                                        input#ratingUpdateMovie.form-control(type='number', step="0.1", min="0.0", max="10.0", name='updateRating' style="padding-top:2rem")
+                                        label.ms-2(for='ratingUpdateMovie') Rating 
                                     .col.form-floating
-                                        input#countryUpdateMovie.form-control(type='text', name='updateCountry', disabled, readonly)
-                                        label(for='countryUpdateMovie') Country 
+                                        input#countryUpdateMovie.form-control(type='text', name='updateCountry', disabled, readonly style="padding-top:2rem")
+                                        label.ms-2(for='countryUpdateMovie')
+                                          |Country 
                                 .row.group-input.mb-3 
                                     .col.form-floating
-                                        input#durationUpdateMovie.form-control(type='time', name='updateDuration', step="60", min="00:30", max="03:00")
-                                        label(for='durationUpdateMovie') Duration 
+                                        input#durationUpdateMovie.form-control(type='time', name='updateDuration', step="60", min="00:30", max="03:00" style="padding-top:2rem")
+                                        label.ms-2(for='durationUpdateMovie') Duration 
                                     .col.form-floating
-                                        input#releaseUpdateMovie.form-control(type='date', name='updateRelease')
-                                        label(for='releaseUpdateMovie') Release   
+                                        input#releaseUpdateMovie.form-control(type='date', name='updateRelease' style="padding-top:2rem")
+                                        label.ms-2(for='releaseUpdateMovie') Release   
                                 .row.group-input.mb-3 
                                     .col.form-floating
-                                        input#imageUpdateMovie.form-control(type='text', name='updateImage', disabled, readonly)
-                                        label(for='imageUpdateMovie') Image 
+                                        input#imageUpdateMovie.form-control(type='text', name='updateImage', disabled, readonly style="padding-top:2rem")
+                                        label.ms-2(for='imageUpdateMovie') Image 
                                     .col.form-floating
-                                        input#videoUpdateMovie.form-control(type='text', name='updateVideo', disabled, readonly)
-                                        label(for='videoUpdateMovie') Video
+                                        input#videoUpdateMovie.form-control(type='text', name='updateVideo', disabled, readonly style="padding-top:2rem")
+                                        label.ms-2(for='videoUpdateMovie') Video
                                 .row.group-input.mb-3 
                                     .col.form-floating
-                                        input#directorUpdateMovie.form-control(type='text', name='updateDirector', disabled, readonly)
-                                        label(for='directorUpdateMovie') Director 
+                                        input#directorUpdateMovie.form-control(type='text', name='updateDirector', disabled, readonly style="padding-top:2rem")
+                                        label.ms-2(for='directorUpdateMovie') Director 
                                     .col.form-floating
-                                        input#producerUpdateMovie.form-control(type='text', name='updateProducer', disabled, readonly)
-                                        label(for='producerUpdateMovie') Producer
+                                        input#producerUpdateMovie.form-control(type='text', name='updateProducer', disabled, readonly style="padding-top:2rem")
+                                        label.ms-2(for='producerUpdateMovie') Producer
                                 .form-floating.mb-3
                                     input#actorUpdateMovie.form-control(type='text', name='updateActorList', disabled, readonly)
                                     label(for='actorUpdateMovie') Actor 
@@ -210,10 +211,10 @@ html(lang="en")
         p.p-5(style="color:transparent") placeholder
 
     //- Bootstrap 5 JS
-                
+    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')   
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js')
     script(src='/js/tableAction.js')
     script(src="/js/manageMovie.js")
-    script(src='https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js')
     script.
       $(document).ready(function() {
         $(".sidebar-btn").click(function() {
