@@ -89,6 +89,8 @@ dist
 # public
 # video resource
 src/public/videos/
+# image resource
+src/public/images/
 
 # vuepress build output
 .vuepress/dist

@@ -18,7 +18,7 @@ btnDeleteMovie.onclick = () => {
     xhr.setRequestHeader("Content-Type", "application/json");
     xhr.addEventListener("load", function () {
       if (xhr.status === 200) {
-        alert("Success.");
+        alert("Success");
         location.reload();
       }
     });
@@ -28,7 +28,7 @@ btnDeleteMovie.onclick = () => {
     });
     xhr.send(JSON.stringify(data));
   } else {
-    alert("Please select.");
+    alert("Please Select");
   }
 };
 

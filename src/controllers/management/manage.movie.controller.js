@@ -116,118 +116,162 @@ module.exports.postAddMovie = async (req, res) => {
   try {
     // ACTOR
     const actorIds = [];
-    const actors = req.body.actorList.split(",");
-    for (const actorInput of actors) {
-      //format input
-      const words = actorInput.toLowerCase().split(" ");
-      for (let i = 0; i < words.length; i++) {
-        words[i] = words[i][0].toUpperCase() + words[i].slice(1).toLowerCase();
+    try {
+      const actors = req.body.actorList.split(", ");
+      for (const actorInput of actors) {
+        //format input
+        const words = actorInput.toLowerCase().split(" ");
+        for (let i = 0; i < words.length; i++) {
+          words[i] =
+            words[i][0].toUpperCase() + words[i].slice(1).toLowerCase();
+        }
+        const actorName = words.join(" ");
+        //find or create
+        const [actor, created] = await Actor.findOrCreate({
+          where: { full_name: actorName },
+          defaults: {},
+        });
+        actorIds.push(actor.id);
       }
-      const actorName = words.join(" ");
-      //find or create
-      const [actor, created] = await Actor.findOrCreate({
-        where: { full_name: actorName },
-        defaults: {},
-      });
-      actorIds.push(actor.id);
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create actors");
     }
-    // console.log("Insert actor", actorIds);
 
     // GERNE
     const gerneIds = [];
-    const gernes = req.body.gerneList.split(",");
-    for (const genreInput of gernes) {
-      // format input
+    try {
+      const gernes = req.body.gerneList.split(", ");
+      for (const genreInput of gernes) {
+        // format input
+        //format input
+        const words = genreInput.toLowerCase().split(" ");
+        for (let i = 0; i < words.length; i++) {
+          words[i] =
+            words[i][0].toUpperCase() + words[i].slice(1).toLowerCase();
+        }
+        const genreName = words.join(" ");
+        //find or create
+        const [gerne, created] = await Gerne.findOrCreate({
+          where: { name: genreName },
+          defaults: {},
+        });
+        gerneIds.push(gerne.id);
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create gernes");
+    }
+
+    //DIRECTOR
+    let directorId = null;
+    try {
       //format input
-      const words = genreInput.toLowerCase().split(" ");
+      const words = req.body.director.toLowerCase().split(" ");
       for (let i = 0; i < words.length; i++) {
         words[i] = words[i][0].toUpperCase() + words[i].slice(1).toLowerCase();
       }
-      const genreName = words.join(" ");
+      const directorName = words.join(" ");
       //find or create
-      const [gerne, created] = await Gerne.findOrCreate({
-        where: { name: genreName },
+      const [director, createdDirector] = await Director.findOrCreate({
+        where: { full_name: directorName },
         defaults: {},
       });
-      gerneIds.push(gerne.id);
+      directorId = director.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create director");
     }
-    // console.log("Insert gerne", gerneIds);
-
-    //DIRECTOR
-    //format input
-    const words = req.body.director.toLowerCase().split(" ");
-    for (let i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].slice(1).toLowerCase();
-    }
-    const directorName = words.join(" ");
-    //find or create
-    const [director, createdDirector] = await Director.findOrCreate({
-      where: { full_name: directorName },
-      defaults: {},
-    });
-    // console.log("Insert director", director);
 
     //PRODUCER
-    //format input
-    const text = req.body.producer.toLowerCase().split(" ");
-    for (let i = 0; i < text.length; i++) {
-      text[i] = text[i][0].toUpperCase() + text[i].slice(1).toLowerCase();
+    let produceId = null;
+    try {
+      //format input
+      const text = req.body.producer.toLowerCase().split(" ");
+      for (let i = 0; i < text.length; i++) {
+        text[i] = text[i][0].toUpperCase() + text[i].slice(1).toLowerCase();
+      }
+      const producerName = text.join(" ");
+      const national = req.body.country.toLowerCase().split(" ");
+      for (let i = 0; i < national.length; i++) {
+        national[i] =
+          national[i][0].toUpperCase() + national[i].slice(1).toLowerCase();
+      }
+      const countryName = national.join(" ");
+      //find or create
+      const [producer, createdProducer] = await Producer.findOrCreate({
+        where: { name: producerName, country: countryName },
+        defaults: {},
+      });
+      produceId = producer.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create producer");
     }
-    const producerName = text.join(" ");
-    const national = req.body.country.toLowerCase().split(" ");
-    for (let i = 0; i < national.length; i++) {
-      national[i] =
-        national[i][0].toUpperCase() + national[i].slice(1).toLowerCase();
-    }
-    const countryName = national.join(" ");
-    //find or create
-    const [producer, createdProducer] = await Producer.findOrCreate({
-      where: { name: producerName, country: countryName },
-      defaults: {},
-    });
-
-    // console.log("Insert producer", producer);
 
     //MOVIE
-    //format input
-    const temp = req.body.title.toLowerCase().split(" ");
-    for (let i = 0; i < temp.length; i++) {
-      temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1).toLowerCase();
+    let movieId = null;
+    try {
+      //format input
+      const temp = req.body.title.toLowerCase().split(" ");
+      for (let i = 0; i < temp.length; i++) {
+        temp[i] = temp[i][0].toUpperCase() + temp[i].slice(1).toLowerCase();
+      }
+      const titleMoive = temp.join(" ");
+      const movie = await Movie.create({
+        title: titleMoive,
+        description: req.body.description,
+        rating: req.body.rating,
+        duration: req.body.duration,
+        release: req.body.release,
+        image: req.files.image ? req.files.image[0].filename : null,
+        video: req.files.video ? req.files.video[0].filename : null,
+        director_id: directorId,
+        producer_id: produceId,
+        create_at: Sequelize.literal("NOW()"),
+      });
+      movieId = movie.id;
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create movie");
     }
-    const titleMoive = temp.join(" ");
-    const movie = await Movie.create({
-      title: titleMoive,
-      description: req.body.description,
-      rating: req.body.rating,
-      duration: req.body.duration,
-      release: req.body.release,
-      image: req.files.image ? req.files.image[0].filename : null,
-      video: req.files.video ? req.files.video[0].filename : null,
-      director_id: director.id,
-      producer_id: producer.id,
-      create_at: Sequelize.literal("NOW()"),
-    });
-    // console.log("Insert movie", movie);
 
     // CAST
-    for (const actorId of actorIds) {
-      await Cast.create({
-        actor_id: actorId,
-        movie_id: movie.id,
-      });
+    try {
+      for (const actorId of actorIds) {
+        await Cast.create({
+          actor_id: actorId,
+          movie_id: movieId,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create cast");
     }
-    // console.log("insert cast");
-    // CATEGORY
-    for (const gerneId of gerneIds) {
-      await Category.create({
-        gerne_id: gerneId,
-        movie_id: movie.id,
-      });
-    }
-    // console.log("insert category");
 
-    res.status(200).json({ message: "Success." });
+    // CATEGORY
+    try {
+      for (const gerneId of gerneIds) {
+        await Category.create({
+          gerne_id: gerneId,
+          movie_id: movieId,
+        });
+      }
+    } catch (error) {
+      console.log(error);
+      throw new Error("Failed to create category");
+    }
+    const script = `<script>
+                      alert('Success');
+                      window.location.href='/management/movies';
+                    </script>`;
+
+    res.status(200).send(script);
   } catch (error) {
-    res.status(500).json({ message: error });
+    const script = `<script>
+                      alert('${error.message}');
+                      window.location.href='/management/movies';
+                    </script>`;
+    res.status(500).send(script);
   }
 };
